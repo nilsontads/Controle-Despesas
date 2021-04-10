@@ -6,52 +6,52 @@
                 template="/WEB-INF/templates/Layout.xhtml">
 
     <ui:define name="content">
-        <h1 class="aw-page-title">Despesas</h1>
 
         <h:form id="frm">
+            <p:messages autoUpdate="true"/>
+            <p:growl autoUpdate="true"/>    
+            
             <div class="alert alert-success alert-dismissible" role="alert">
 
             </div>
-            <p:toolbar>
+            <p:toolbar style="margin-top: 60px">
                 <f:facet name="left">
                     <p:commandButton title="Nova Despesa" icon="ui-icon-document" onclick="PF('novoLancto').show()"/> 
-                    <p:commandButton title="Consultar Despesas" icon="ui-icon-folder-open" onclick="PF('consultaLancto').show()"/>   
 
                 </f:facet>
 
             </p:toolbar>
 
             <p:dataTable value="#{controleDespesa.listDespesa}" var="Lancamento" widgetVar="100%" 
-                         rows="15" paginator="true"   paginatorPosition="bottom" id="pes_tip_ocorrencia" style="margin-top: 5px"
+                         rows="15" paginator="true"   paginatorPosition="bottom" id="pes_lancamento" style="margin-top: 5px"
                          >
 
-
-                <p:column headerText="Código" sortBy="#{Lancamento.codigo}">
-                    <h:outputText value="#{Lancamento.codigo}">
-                    </h:outputText>
-                </p:column>
                 <p:column headerText="Descrição" >
                     <h:outputText value="#{Lancamento.descricao}">
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Pago" >
-                    <h:outputText value="#{Lancamento.pago}">
+                <p:column headerText="Status" sortBy="#{Lancamento.status}">
+                    <h:outputText value="#{Lancamento.status}">
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Tipo" >
-                    <h:outputText value="#{Lancamento.tipo}">
+                <p:column headerText="Vencimento" >
+                    <h:outputText value="#{Lancamento.dataVencimento}">
                     </h:outputText>
                 </p:column>
                 <p:column headerText="Valor" >
                     <h:outputText value="#{Lancamento.valor}">
                     </h:outputText>
                 </p:column>
-                <p:column style="width: 35px" >
+                <p:column style="width: 35px" headerText="#" >
                     <p:commandButton title="Editar" icon="ui-icon-pencil" /> 
-                    <p:commandButton title="Excluir" icon="ui-icon-trash" />                 
+                    <p:commandButton title="Excluir" icon="ui-icon-trash" action="#{controleDespesa.excluirLancamentos(Lancamento)}"   
+                                     update="pes_lancamento" onclick="PF('confirmacao').show()">  
+                    </p:commandButton>
                 </p:column>
             </p:dataTable>
-
+            <p:confirmDialog header="exclusao" message="Deseja Excluir ? " widgetVar="confirmacao">
+                
+            </p:confirmDialog>
 
 
             <p:dialog header="Nova Despesa" widgetVar="novoLancto" id="despesa-dialogo"
@@ -62,12 +62,16 @@
                     <h:panelGrid id="gridSenha" columns="2" cellpadding="5" styleClass="panelgrid-noborder">
                         <p:outputLabel value="Descrição"/>
                         <p:inputText value="#{controleDespesa.descricao}">
-                            <f:ajax event="keyup" render="frm"/>
                         </p:inputText>
-                        <p:outputLabel value="Pago"/>
-                        <p:inputText value="#{controleDespesa.pago}"/>
-                        <p:outputLabel value="Tipo"/>
-                        <p:inputText value="#{controleDespesa.tipo}"/>
+                        <p:outputLabel value="Status"/>
+                        <p:selectOneMenu id="status" value="#{controleDespesa.status}" required="true">
+                            <f:selectItem itemLabel="Pendente" itemValue="Pendente"/> 
+                            <f:selectItem itemLabel="Recebido" itemValue="Recebido"/>
+                        </p:selectOneMenu>
+                       
+                        <p:outputLabel value="Vencimento"/>
+                        <p:inputMask id="vencimento" value="#{controleDespesa.dataVencimento}" mask="99/99/9999"/>
+                        <p:inputText value="#{controleDespesa.dataVencimento}"/>
                         <p:outputLabel value="Valor"/>
                         <p:inputText value="#{controleDespesa.valor}"/>
                     </h:panelGrid>  
@@ -82,10 +86,6 @@
 
             </p:dialog>
 
-            <p:dialog header="Consuta Despesa" widgetVar="consultaLancto" id="consulta-dialogo"
-                      modal="true" closeOnEscape="true" position="center" >
-                <p:button value="teste"/> 
-            </p:dialog>
         </h:form>
     </ui:define>
 

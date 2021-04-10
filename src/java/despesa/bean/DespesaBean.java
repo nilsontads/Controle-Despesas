@@ -1,25 +1,23 @@
 package despesa.bean;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import tipoLancamento.TipoLancamento;
+import javax.persistence.Table;
+import situacao.lancamentos.SituacaoLancamentos;
 
 @Entity
+@Table(name = "Lançamentos")
 public class DespesaBean implements Serializable {
 
     @Id
     @GeneratedValue
     private Integer codigo;
-    @Enumerated(EnumType.STRING)
-    private TipoLancamento tipo;
+    private String status;
     private String descricao;
-    private BigDecimal valor;
-    private boolean pago;
+    private Double valor;
+    private String dataVencimento;
 
     
     public DespesaBean() {
@@ -34,16 +32,6 @@ public class DespesaBean implements Serializable {
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
-
-    public TipoLancamento getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoLancamento tipo) {
-        this.tipo = tipo;
-    }
-
-
     public String getDescricao() {
         return descricao;
     }
@@ -51,24 +39,33 @@ public class DespesaBean implements Serializable {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
-    public BigDecimal getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 
-
-    public boolean isPago() {
-        return pago;
+    public String getDataVencimento() {
+        return dataVencimento;
     }
 
-    public void setPago(boolean pago) {
-        this.pago = pago;
+    public void setDataVencimento(String dataVencimento) {
+        this.dataVencimento = dataVencimento;
     }
-  
 
+    public void getValor(double d) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    
 }

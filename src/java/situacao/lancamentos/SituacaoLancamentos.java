@@ -1,13 +1,13 @@
 
-package tipoLancamento;
+package situacao.lancamentos;
 
 
-public enum TipoLancamento {
+public enum SituacaoLancamentos {
     
-    RECEITA("Receita"),
-    DESESA("Dspesa");
+    PENDENTE("Pendente"),
+    RECEBIDO("Recebido");
 
-    private TipoLancamento(String descricao) {
+    private SituacaoLancamentos(String descricao) {
         this.descricao = descricao;
     }
     

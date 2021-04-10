@@ -3,42 +3,39 @@ package controler.despesa;
 import despesa.bean.DespesaBean;
 import despesa.dao.DespesaDaoImpl;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import tipoLancamento.TipoLancamento;
 import util.DaoException;
 import util.JSFUtil;
 
 @ManagedBean
 @SessionScoped
 public class ControleDespesa implements Serializable {
+
     private Boolean renderizar = false;
     private DespesaBean dpb = new DespesaBean();
     private DespesaDaoImpl dd = new DespesaDaoImpl();
-    private List<DespesaBean> listDespesa = new ArrayList<DespesaBean>(); 
-    /*permite selecionar objeto da tabela para edição/exclusão*/
-    private DespesaBean despesaSelecionada;
-    
+    private List<DespesaBean> listDespesa = new ArrayList<DespesaBean>();
+
     public ControleDespesa() {
     }
 
     private String descricao;
-    private String pago;
-    private String tipo;
-    private BigDecimal valor;
-    
+    private String status;
+    private Double valor;
+    private String dataVencimento;
+
     /*função inserir objeto*/
-    public void inserirDespesa(){
+    public void inserirDespesa() {
+        this.dpb.setDataVencimento(dataVencimento);
         this.dpb.setDescricao(descricao);
-        this.dpb.setPago(true);
-        this.dpb.setTipo(TipoLancamento.RECEITA);
+        this.dpb.setStatus(status);
         this.dpb.setValor(valor);
-        
+
         try {
             getDd().inserir(this.dpb);
             this.dpb = new DespesaBean();
@@ -47,21 +44,20 @@ public class ControleDespesa implements Serializable {
             System.out.println("Objeto não salvo !");
         }
     }
-    
+
     /*fução escluir */
-    public void excluirTipoServicoPrestado(DespesaBean despesa) {
+    public void excluirLancamentos(DespesaBean despesa) {
         try {
             getDd().excluir(despesa);
-            JSFUtil.adicionarMensagemSucesso("excluido com sucesso!");
+            System.out.println("excluido com sucesso");
         } catch (DaoException ex) {
             Logger.getLogger(ControleDespesa.class.getName()).log(Level.SEVERE, null, ex);
-            JSFUtil.adicionarMensagemErro("Objeto Relacionado");
+            System.out.println("Erro na excluzão");
         }
 
     }
-    
-    
-  public void fecharFormDespesa() {
+
+    public void fecharFormDespesa() {
         this.renderizar = false;
     }
 
@@ -89,30 +85,6 @@ public class ControleDespesa implements Serializable {
         this.descricao = descricao;
     }
 
-    public String getPago() {
-        return pago;
-    }
-
-    public void setPago(String pago) {
-        this.pago = pago;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
     public Boolean getRenderizar() {
         return renderizar;
     }
@@ -134,12 +106,28 @@ public class ControleDespesa implements Serializable {
         this.listDespesa = listDespesa;
     }
 
-    public DespesaBean getDespesaSelecionada() {
-        return despesaSelecionada;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDespesaSelecionada(DespesaBean despesaSelecionada) {
-        this.despesaSelecionada = despesaSelecionada;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public String getDataVencimento() {
+        return dataVencimento;
+    }
+
+    public void setDataVencimento(String dataVencimento) {
+        this.dataVencimento = dataVencimento;
     }
 
 }

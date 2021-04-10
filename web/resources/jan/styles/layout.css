@@ -17,12 +17,12 @@
 
 /* SIDEBAR */
 .aw-sidebar {
-	position: fixed;
+	position: relative;
 	top: 50px;
 	bottom: 0;
 	left: 0;
 	width: 210px;
-	margin-left: -211px;
+	margin-left: 5px;
 	z-index: 9998;
 	transition: margin-left 0.5s;
 	overflow-y: auto;
@@ -32,32 +32,35 @@
 }
 
 .aw-sidebar.is-toggled {
-	margin-left: 0px;
+	margin-left: 5px;
 }
 
 @media (min-width: 960px) {
 	.aw-sidebar {
-		margin-left: 0px;
+		margin-left: 5px;
 	}
 	
 	.aw-sidebar.is-toggled {
-		margin-left: -211px;
+		margin-left: 5px;
 	}
 }
 
 /* CONTENT */
 .aw-content {
+        bottom: 0;
+	left: 0;
 	padding: 0 15px;
 	margin-top: 50px;
+        margin-left: 5px;
 	transition: margin-left 0.5s;
 }
 
 @media (min-width: 960px) {
 	.aw-content {
-		margin-left: 210px;
+		margin-left: 5px;
 	}
 	
 	.aw-content.is-toggled {
-		margin-left: 0;
+		margin-left: 5px;
 	}
 }
