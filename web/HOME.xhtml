@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/Layout.xhtml">
+
+    <ui:define name="content">
+        <h1 class="aw-page-title">Despesas</h1>
+
+        <h:form id="frm">
+            <div class="alert alert-success alert-dismissible" role="alert">
+
+            </div>
+            <p:toolbar>
+                <f:facet name="left">
+                    <p:commandButton title="Nova Despesa" icon="ui-icon-document" onclick="PF('novoLancto').show()"/> 
+                    <p:commandButton title="Consultar Despesas" icon="ui-icon-folder-open" onclick="PF('consultaLancto').show()"/>   
+
+                </f:facet>
+
+            </p:toolbar>
+
+            <p:dataTable value="#{controleDespesa.listDespesa}" var="Lancamento" widgetVar="100%" 
+                         rows="15" paginator="true"   paginatorPosition="bottom" id="pes_tip_ocorrencia" style="margin-top: 5px"
+                         >
+
+
+                <p:column headerText="Código" sortBy="#{Lancamento.codigo}">
+                    <h:outputText value="#{Lancamento.codigo}">
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Descrição" >
+                    <h:outputText value="#{Lancamento.descricao}">
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Pago" >
+                    <h:outputText value="#{Lancamento.pago}">
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Tipo" >
+                    <h:outputText value="#{Lancamento.tipo}">
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Valor" >
+                    <h:outputText value="#{Lancamento.valor}">
+                    </h:outputText>
+                </p:column>
+                <p:column style="width: 35px" >
+                    <p:commandButton title="Editar" icon="ui-icon-pencil" /> 
+                    <p:commandButton title="Excluir" icon="ui-icon-trash" />                 
+                </p:column>
+            </p:dataTable>
+
+
+
+            <p:dialog header="Nova Despesa" widgetVar="novoLancto" id="despesa-dialogo"
+                      resizable="false" rendered="true" 
+                      modal="true" closeOnEscape="true" position="center">
+
+                <div class="ui-grid-responsive">
+                    <h:panelGrid id="gridSenha" columns="2" cellpadding="5" styleClass="panelgrid-noborder">
+                        <p:outputLabel value="Descrição"/>
+                        <p:inputText value="#{controleDespesa.descricao}">
+                            <f:ajax event="keyup" render="frm"/>
+                        </p:inputText>
+                        <p:outputLabel value="Pago"/>
+                        <p:inputText value="#{controleDespesa.pago}"/>
+                        <p:outputLabel value="Tipo"/>
+                        <p:inputText value="#{controleDespesa.tipo}"/>
+                        <p:outputLabel value="Valor"/>
+                        <p:inputText value="#{controleDespesa.valor}"/>
+                    </h:panelGrid>  
+                </div>
+                <center>
+                    <p:outputLabel/>
+                    <p:commandButton value=" Salvar " actionListener="#{controleDespesa.inserirDespesa()}"
+                                     update="frm" style="width: auto;"                                     
+                                     oncomplete="PF('despesa-dialogo').hide()"/>
+                </center>
+
+
+            </p:dialog>
+
+            <p:dialog header="Consuta Despesa" widgetVar="consultaLancto" id="consulta-dialogo"
+                      modal="true" closeOnEscape="true" position="center" >
+                <p:button value="teste"/> 
+            </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
