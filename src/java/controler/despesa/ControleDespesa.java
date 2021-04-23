@@ -4,12 +4,17 @@ import despesa.bean.DespesaBean;
 import despesa.dao.DespesaDaoImpl;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 import util.DaoException;
+import util.JSFUtil;
 
 @ManagedBean
 @SessionScoped
@@ -38,9 +43,10 @@ public class ControleDespesa implements Serializable {
         try {
             getDd().inserir(this.dpb);
             this.dpb = new DespesaBean();
-            System.out.println("inserido com sucesso !");
+            JSFUtil.adicionarMensagemSucesso("salvo com sucesso!");
         } catch (DaoException ex) {
-            System.out.println("Objeto não salvo !");
+            Logger.getLogger(ControleDespesa.class.getName()).log(Level.SEVERE, null, ex);
+            JSFUtil.adicionarMensagemErro(ex.getMessage());
         }
     }
 
@@ -48,12 +54,18 @@ public class ControleDespesa implements Serializable {
     public void excluirLancamentos(DespesaBean despesa) {
         try {
             getDd().excluir(despesa);
-            System.out.println("excluido com sucesso");
+            messageSucesso("Usuário Excluído com Sucesso!", "formMenu:mgsGeral");
         } catch (DaoException ex) {
             Logger.getLogger(ControleDespesa.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Erro na excluzão");
         }
 
+    }
+    
+    /*retorno de mensagens*/
+    public void messageSucesso(String a, String update) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(a));
+        RequestContext.getCurrentInstance().update(Arrays.asList(update));
     }
 
     public void fecharFormDespesa() {

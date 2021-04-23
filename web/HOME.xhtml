@@ -9,22 +9,23 @@
 
         <h:form id="frm">           
             <p:growl autoUpdate="true"/>    
-      
+
             <p:toolbar style="margin-top: 60px">
                 <f:facet name="left">
-                    <p:commandButton title="Nova Despesa" icon="ui-icon-document" onclick="PF('novoLancto').show()"/> 
+                    <p:commandButton value="Novo" title="Nova Despesa" icon="ui-icon-document" onclick="PF('novoLancto').show()"/> 
 
                 </f:facet>
 
             </p:toolbar>
 
             <p:dataTable value="#{controleDespesa.listDespesa}" var="Lancamento" widgetVar="100%" 
-                         rows="15" paginator="true"   paginatorPosition="bottom" id="pes_lancamento" style="margin-top: 5px"
-                         >
-
+                         rows="3" paginator="true"   paginatorPosition="bottom" id="pes_lancamento" style="margin-top: 5px"
+                         reflow="true">
+                <p:column headerText="Código" priority="4">
+                    <h:outputText value="#{Lancamento.codigo}"/>
+                </p:column>
                 <p:column headerText="Descrição" >
-                    <h:outputText value="#{Lancamento.descricao}">
-                    </h:outputText>
+                    <h:outputText value="#{Lancamento.descricao}"/>
                 </p:column>
                 <p:column headerText="Status" >
                     <h:outputText value="#{Lancamento.status}">
@@ -38,7 +39,7 @@
                     <h:outputText value="#{Lancamento.valor}">
                     </h:outputText>
                 </p:column>
-                <p:column style="width: 35px" headerText="#" >
+                <p:column  headerText="#" >
                     <p:commandButton title="Editar" icon="ui-icon-pencil" /> 
                     <p:commandButton title="Excluir" icon="ui-icon-trash" 
                                      action="#{controleDespesa.excluirLancamentos(Lancamento)}" process="@this"  
@@ -51,24 +52,25 @@
 
             <p:dialog header="Nova Despesa" widgetVar="novoLancto" id="despesa-dialogo"
                       resizable="false" rendered="true" 
-                      modal="true" closeOnEscape="true" position="center">
+                      modal="true" closeOnEscape="true" position="center"
+                      responsive="true">
 
-                <div class="ui-grid-responsive">
-                    <p:panelGrid id="gridSenha" columns="2" styleClass="panelgrid-noborder" >
+                <div class="ui-fluid">
+                    <p:panelGrid id="gridSenha" columns="2" styleClass="panelgrid-noborder" layout="grid" style="align-content: center">
                         <p:outputLabel value="Descrição"/>
-                        <p:inputText value="#{controleDespesa.descricao}">
+                        <p:inputText value="#{controleDespesa.descricao}" required="true">
                         </p:inputText>
                         <p:outputLabel value="Status"/>
                         <p:selectOneMenu id="status" value="#{controleDespesa.status}" required="true">
                             <f:selectItem itemLabel="Pendente" itemValue="Pendente"/> 
                             <f:selectItem itemLabel="Recebido" itemValue="Recebido"/>
                         </p:selectOneMenu>
-                       
+
                         <p:outputLabel value="Vencimento"/>
-                        <p:inputMask id="vencimento" value="#{controleDespesa.dataVencimento}" mask="99/99/9999"/>
-                        
+                        <p:inputMask id="vencimento" value="#{controleDespesa.dataVencimento}" mask="99/99/9999" required="true" />
+
                         <p:outputLabel value="Valor"/>
-                        <p:inputText value="#{controleDespesa.valor}" />
+                        <p:inputText value="#{controleDespesa.valor}" required="true"/>
                     </p:panelGrid>  
                 </div>
                 <center>
