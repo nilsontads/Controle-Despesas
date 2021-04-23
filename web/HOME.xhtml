@@ -7,13 +7,9 @@
 
     <ui:define name="content">
 
-        <h:form id="frm">
-            <p:messages autoUpdate="true"/>
+        <h:form id="frm">           
             <p:growl autoUpdate="true"/>    
-            
-            <div class="alert alert-success alert-dismissible" role="alert">
-
-            </div>
+      
             <p:toolbar style="margin-top: 60px">
                 <f:facet name="left">
                     <p:commandButton title="Nova Despesa" icon="ui-icon-document" onclick="PF('novoLancto').show()"/> 
@@ -30,7 +26,7 @@
                     <h:outputText value="#{Lancamento.descricao}">
                     </h:outputText>
                 </p:column>
-                <p:column headerText="Status" sortBy="#{Lancamento.status}">
+                <p:column headerText="Status" >
                     <h:outputText value="#{Lancamento.status}">
                     </h:outputText>
                 </p:column>
@@ -44,14 +40,13 @@
                 </p:column>
                 <p:column style="width: 35px" headerText="#" >
                     <p:commandButton title="Editar" icon="ui-icon-pencil" /> 
-                    <p:commandButton title="Excluir" icon="ui-icon-trash" action="#{controleDespesa.excluirLancamentos(Lancamento)}"   
-                                     update="pes_lancamento" onclick="PF('confirmacao').show()">  
+                    <p:commandButton title="Excluir" icon="ui-icon-trash" 
+                                     action="#{controleDespesa.excluirLancamentos(Lancamento)}" process="@this"  
+                                     update="pes_lancamento">  
+                        <p:confirm icon="ui-icon-alert" header=" Confirmação de Exclusão" message="Tem Certeza que Deseja Excluir?" />
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
-            <p:confirmDialog header="exclusao" message="Deseja Excluir ? " widgetVar="confirmacao">
-                
-            </p:confirmDialog>
 
 
             <p:dialog header="Nova Despesa" widgetVar="novoLancto" id="despesa-dialogo"
@@ -59,7 +54,7 @@
                       modal="true" closeOnEscape="true" position="center">
 
                 <div class="ui-grid-responsive">
-                    <h:panelGrid id="gridSenha" columns="2" cellpadding="5" styleClass="panelgrid-noborder">
+                    <p:panelGrid id="gridSenha" columns="2" styleClass="panelgrid-noborder" >
                         <p:outputLabel value="Descrição"/>
                         <p:inputText value="#{controleDespesa.descricao}">
                         </p:inputText>
@@ -71,10 +66,10 @@
                        
                         <p:outputLabel value="Vencimento"/>
                         <p:inputMask id="vencimento" value="#{controleDespesa.dataVencimento}" mask="99/99/9999"/>
-                        <p:inputText value="#{controleDespesa.dataVencimento}"/>
+                        
                         <p:outputLabel value="Valor"/>
-                        <p:inputText value="#{controleDespesa.valor}"/>
-                    </h:panelGrid>  
+                        <p:inputText value="#{controleDespesa.valor}" />
+                    </p:panelGrid>  
                 </div>
                 <center>
                     <p:outputLabel/>
@@ -86,6 +81,12 @@
 
             </p:dialog>
 
+        </h:form>
+        <h:form>
+            <p:confirmDialog global="true"  showEffect="fade" hideEffect="fade" >
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" oncomplete="confirmacao.hide()"/>
+            </p:confirmDialog>
         </h:form>
     </ui:define>
 
